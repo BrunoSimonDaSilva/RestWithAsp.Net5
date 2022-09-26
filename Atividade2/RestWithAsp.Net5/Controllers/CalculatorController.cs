@@ -19,12 +19,22 @@ namespace RestWithAsp.Net5.Controllers
         }
 
         [HttpGet("sum/{fistNumeber}/{secondNumber}")]
-        public IActionResult Get(string fistNumber, string secondNumber)
+        public IActionResult Sum(string fistNumber, string secondNumber)
         {
             if (isNumeric(fistNumber) && isNumeric(secondNumber))
             {
-                var sum = double.Parse(fistNumber) + double.Parse(secondNumber);
+                var sum = ParceDecimal(fistNumber) + ParceDecimal(secondNumber);
                 return Ok(sum);
+            }
+            return BadRequest("Invalid input");
+        }
+        [HttpGet("sub/{fistNumeber}/{secondNumber}")]
+        public IActionResult Sub(string fistNumber, string secondNumber)
+        {
+            if (isNumeric(fistNumber) && isNumeric(secondNumber))
+            {
+                var Sub = ParceDecimal(fistNumber) - ParceDecimal(secondNumber);
+                return Ok(Sub);
             }
             return BadRequest("Invalid input");
         }
@@ -39,6 +49,16 @@ namespace RestWithAsp.Net5.Controllers
                 out number
             );
             return isNumeric;
+        }
+
+        private decimal ParceDecimal(string strNumber)
+        {
+            decimal decimalValue;
+            if (decimal.TryParse(strNumber, out decimalValue))
+            {
+                return decimalValue;
+            }
+            return 0;
         }
     }
 }
